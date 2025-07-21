@@ -1,0 +1,14 @@
+{
+  "name": "iterator-helper-performance",
+  "version": "1.0.0",
+  "description": "comparison of runtime performance and memory usage between Array.map() and Iterator.map()",
+  "main": "benchmark.js",
+  "scripts": {
+    "start": "node benchmark.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "iterator-helpers-polyfill": "^3.0.1"
+  }
+}
