@@ -6,7 +6,20 @@ const TAKE = 5;
 
 const formatMB = (bytes) => (bytes / 1024 / 1024).toFixed(2);
 
+// 강제 GC 실행 (Node 실행 시 --expose-gc 필요)
+const runGC = () => {
+  if (global.gc) global.gc();
+};
+
+// Generator: 1부터 LENGTH까지 순차적으로 생성
+function* range(n) {
+  for (let i = 1; i <= n; i++) {
+    yield i;
+  }
+}
+
 const arrayBenchmark = () => {
+  runGC();
   const arr = Array.from({ length: LENGTH }, (_, i) => i + 1);
   const memStart = process.memoryUsage().heapUsed;
   const t0 = performance.now();
@@ -24,10 +37,10 @@ const arrayBenchmark = () => {
 };
 
 const iteratorBenchmark = () => {
-  const arr = Array.from({ length: LENGTH }, (_, i) => i + 1);
+  runGC();
   const memStart = process.memoryUsage().heapUsed;
   const t0 = performance.now();
-  const iter = arr[Symbol.iterator]()
+  const iter = range(LENGTH)
     .filter(n => n % 2 === 0)
     .map(n => n * 2)
     .take(TAKE);
@@ -66,4 +79,4 @@ console.log(`Array 평균 시간: ${arrayStats.avgTime} ms, 평균 메모리: ${
 console.log('\nIterator 방식 벤치마크...');
 const iteratorStats = repeatBenchmark(iteratorBenchmark);
 console.log('Iterator result:', iteratorStats.lastResult);
-console.log(`Iterator 평균 시간: ${iteratorStats.avgTime} ms, 평균 메모리: ${iteratorStats.avgMem} MB`); 
+console.log(`Iterator 평균 시간: ${iteratorStats.avgTime} ms, 평균 메모리: ${iteratorStats.avgMem} MB`);

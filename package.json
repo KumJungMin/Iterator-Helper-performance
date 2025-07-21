@@ -4,7 +4,7 @@
   "description": "comparison of runtime performance and memory usage between Array.map() and Iterator.map()",
   "main": "benchmark.js",
   "scripts": {
-    "start": "node benchmark.js"
+    "start": "node --expose-gc benchmark.js"
   },
   "author": "",
   "license": "ISC",
